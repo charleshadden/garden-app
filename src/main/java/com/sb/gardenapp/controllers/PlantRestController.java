@@ -1,33 +1,50 @@
 package com.sb.gardenapp.controllers;
 
+import com.sb.gardenapp.exceptions.ResourceNotFoundException;
 import com.sb.gardenapp.models.Plant;
-import com.sb.gardenapp.repositories.PlantsRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sb.gardenapp.services.PlantService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/plants")
 public class PlantRestController {
 
-    private PlantsRepository plantsRepository;
+    @Autowired
+    PlantService service;
 
-    PlantRestController(PlantsRepository plantsRepository) {
-        this.plantsRepository = plantsRepository;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Plant> getPlantById(@PathVariable long id) throws ResourceNotFoundException {
+        Plant plant = service.getPlantById(id).orElseThrow(() -> new ResourceNotFoundException("Plant not found for this id : " + id));
+        return ResponseEntity.ok().body(plant);
     }
 
-    @GetMapping("/plants/id")
-    public Plant getPlantByID(Long id) {
-
-        return plantsRepository.get(id);
+    @GetMapping
+    public List<Plant> getAllPlants() {
+        return service.getAllPlants();
     }
 
-    public void setService(PlantsRepository plantsRepository) {
-
-        this.plantsRepository = plantsRepository;
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePlantById(@PathVariable long id){
+        service.deletePlantById(id);
     }
 
-    public PlantRestController(){}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Plant addPlant(@RequestBody Plant plant) {
+        return service.addPlant(plant);
+    }
 
+    @GetMapping("/plantName/{plantName}")
+    public List<Plant> getPlantByPlantName(@PathVariable String plantName) {
+        return service.getPlantByPlantName(plantName);
+    }
 
 }
