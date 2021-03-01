@@ -1,34 +1,33 @@
 package com.sb.gardenapp.controllers;
 
 import com.sb.gardenapp.models.Plant;
-import com.sb.gardenapp.services.PlantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sb.gardenapp.repositories.PlantsRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/plants")
 public class PlantRestController {
 
-    private PlantService service;
+    private PlantsRepository plantsRepository;
 
-    @GetMapping
-    public List<Plant> getPlants() {
-        return service.getPlants();
+    PlantRestController(PlantsRepository plantsRepository) {
+        this.plantsRepository = plantsRepository;
     }
 
-    public void setService(PlantService service) {
-        this.service = service;
+    @GetMapping("/plants/id")
+    public Plant getPlantByID(Long id) {
+
+        return plantsRepository.get(id);
+    }
+
+    public void setService(PlantsRepository plantsRepository) {
+
+        this.plantsRepository = plantsRepository;
     }
 
     public PlantRestController(){}
 
-    @Autowired
-    public PlantRestController(PlantService service) {
-        this.service = service;
-    }
 
 }

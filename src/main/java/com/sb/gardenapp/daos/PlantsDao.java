@@ -3,14 +3,14 @@ package com.sb.gardenapp.daos;
 import com.sb.gardenapp.models.Plant;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class PlantsDao {
+public interface PlantsDao {
 
-    public PlantsDao(){}
+    void create(Plant plant);
 
-    public List<Plant> getAllPlants() {
-        return null;
-    }
+    Plant read(Long id);
+
+    void update(Plant plant);
+
+    void delete(String plantName);
 }
