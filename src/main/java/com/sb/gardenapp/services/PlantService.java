@@ -27,6 +27,10 @@ public class PlantService {
         repository.deleteById(id);
     }
 
+    public void savePlant(Plant plant) {
+        repository.save(plant);
+    }
+
     public Plant addPlant(Plant plant) {
         return repository.save(plant);
     }

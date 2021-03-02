@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/plants")
 public class PlantRestController {
 
     @Autowired
     PlantService service;
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Plant> getPlantById(@PathVariable long id) throws ResourceNotFoundException {
@@ -28,6 +28,14 @@ public class PlantRestController {
     @GetMapping
     public List<Plant> getAllPlants() {
         return service.getAllPlants();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody Plant plant, @PathVariable long id) {
+        Optional<Plant> existPlant = service.getPlantById(id);
+        plant.setPlantID(id);
+        service.savePlant(plant);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
