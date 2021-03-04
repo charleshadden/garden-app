@@ -21,7 +21,7 @@ public class PlantRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Plant> getPlantById(@PathVariable long id) throws ResourceNotFoundException {
-        Plant plant = service.getPlantById(id).orElseThrow(() -> new ResourceNotFoundException("Plant not found for this id : " + id));
+        Plant plant = service.getPlantById(id).orElseThrow(() -> new ResourceNotFoundException("getPlantByID", "id", id));
         return ResponseEntity.ok().body(plant);
     }
 
