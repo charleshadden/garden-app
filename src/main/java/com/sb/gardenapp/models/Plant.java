@@ -1,21 +1,23 @@
 package com.sb.gardenapp.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "plants")
 public class Plant {
 
     @Id
     @GeneratedValue
-    private int plantID;
+    @Column(name = "plant_id")
+    private long plantID;
 
+    @Column(name = "plant_name")
     private String plantName;
 
 }
